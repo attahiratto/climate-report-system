@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from pymongo import MongoClient
+from climatewise.climatewise.settings import MONGO_CLIENT
 from .utils.parser import run_parser
 import os
-from dotenv import load_dotenv
-load_dotenv()
+
+
 
 def run_parser_api(request):
     if request.method == "POST":
@@ -14,7 +15,7 @@ def run_parser_api(request):
 
 
 def mongo_reports_api(request):
-    client = MongoClient("")
+    client = MongoClient(os.getenv(MONGO_CLIENT))
     db = client["climateReportSystem"]
     collection = db["Incoming Messages"]
     collection_2 = db["Processed Messages"]
