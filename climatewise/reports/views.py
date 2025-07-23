@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from pymongo import MongoClient
 from .utils.parser import run_parser
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def run_parser_api(request):
     if request.method == "POST":
@@ -11,7 +14,7 @@ def run_parser_api(request):
 
 
 def mongo_reports_api(request):
-    client = MongoClient("mongodb+srv://abdoulbin38:w0bsa0IXB7mk2xcH@cluster0.5n02s7c.mongodb.net/climateReportSystemdb?retryWrites=true&w=majority&authSource=admin")
+    client = MongoClient("")
     db = client["climateReportSystem"]
     collection = db["Incoming Messages"]
     collection_2 = db["Processed Messages"]
@@ -32,4 +35,3 @@ def mongo_reports_api(request):
 
 def map_view(request):
     return render(request,'map.html')
-'''AIzaSyAsR2JOO3qPTFHVpKUxY-aPWDF2rJ92z-s'''

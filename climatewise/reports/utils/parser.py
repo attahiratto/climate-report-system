@@ -1,10 +1,11 @@
 import spacy
-import dateparser
+import os
+from climatewise.climatewise.settings import GOOGLE_AI_API,MONGO_CLIENT
 from pymongo import MongoClient
 from geopy.geocoders import Nominatim, GoogleV3
 import google.generativeai as genai
 model = genai.GenerativeModel("gemini-2.5-flash")
-genai.configure(api_key="AIzaSyAsR2JOO3qPTFHVpKUxY-aPWDF2rJ92z-s")
+genai.configure(os.getenv(GOOGLE_AI_API))
 
 
 def run_parser():
@@ -28,7 +29,7 @@ def run_parser():
         except:
             pass
         return lat,lon,location
-    client = MongoClient("mongodb+srv://abdoulbin38:w0bsa0IXB7mk2xcH@cluster0.5n02s7c.mongodb.net/climateReportSystemdb?retryWrites=true&w=majority&authSource=admin")
+    client = MongoClient(os.getenv(MONGO_CLIENT))
     db = client["climateReportSystem"]
     collection = db["Incoming Messages"]
     #collection_2 = db["Processed Messages"]
