@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Climate Incident Map</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>#map { height: 100vh; }</style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([8.6753, 9.0820], 5);  // Nigeria center
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch("/api/reports/")
+            .then(res => res.json())
+            .then(data => {
+                data.reports.forEach(report => {
+                    if (report.latitude && report.longitude) {
+                        L.marker([report.latitude, report.longitude])
+                            .addTo(map)
+                            .bindPopup(`<b>${report.incident_type}</b><br>${report.location}<br>${new Date(report.time).toLocaleString()}`);
+                    }
+                });
+            });
+    </script>
+    
+</body>
+</html>
